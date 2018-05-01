@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>IAG</title>
+    <script src="./src/lib/require.js"></script>
+    <script src="./src/entry.js"></script>
+    <link rel="stylesheet" href="./css/style.css"/>
+  </head>
+  <body>
+    <script>         
+        function checkoutInsurance(insurances, elementId){
+            let rules = [];
+            rules.push(new BundleInsuranceRule());
+            rules.push(new HomeInsuranceRule());
+            rules.push(new CarInsuranceRule());
+            let worker = new CheckoutWorker(rules);
+
+            insurances.forEach(function(insurance){
+                worker.scan(insurance);
+            });
+
+            let total = worker.calculateTotal();
+            document.getElementById(elementId).innerHTML = "$" + total;
+        }
+
+        function calculateBundle1Insurance(){
+            let insurances = [];
+            insurances.push(new HealthInsurance());
+            insurances.push(new PetInsurance());
+            insurances.push(new HomeInsurance());
+            checkoutInsurance(insurances, "bundledemo1");
+        }
+
+        function calculateBundle2Insurance(){
+            let insurances = [];
+            insurances.push(new CarInsurance());
+            insurances.push(new CarInsurance());
+            insurances.push(new CarInsurance());
+            insurances.push(new PetInsurance());
+            checkoutInsurance(insurances, "bundledemo2");
+        }
+
+        function calculateBundle3Insurance(){
+            let insurances = [];
+            insurances.push(new CarInsurance());
+            insurances.push(new HomeInsurance());
+            insurances.push(new HomeInsurance());
+            insurances.push(new CarInsurance());
+            insurances.push(new HomeInsurance());
+            insurances.push(new HomeInsurance());
+            insurances.push(new HomeInsurance());
+            
+            checkoutInsurance(insurances, "bundledemo3");
+        }
+
+       
+    </script>
+
+    <span class='yellowgreen'>SKUs Scanned: cari, cari, cari, peti </span><p class='yellowgreen' id="bundledemo2"></p> 
+    <button type="button" onclick="calculateBundle2Insurance()">Check Out</button>
+
+    <span class='peru'><br/>SKUs Scanned: heai, peti, homi </span><p class="peru" id="bundledemo1"></p> 
+    <button type="button" onclick="calculateBundle1Insurance()">Check Out</button>
+
+    <span class='aqua'><br/>SKUs Scanned: cari, homi, homi, cari, homi, homi, homi </span><p class='aqua' id="bundledemo3"></p> 
+    <button type="button" onclick="calculateBundle3Insurance()">Check Out</button>    
+  </body>
+</html>
